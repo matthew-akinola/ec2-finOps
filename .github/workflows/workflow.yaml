@@ -1,0 +1,27 @@
+name: Resume and Suspend VMs
+on:
+  schedule:
+    - cron: '0 18 * * 1-5'
+    - cron: '0 6 * * 1-5'
+
+jobs:
+  resume-and-suspend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          repository: $GITHUB_REPOSITORY
+          token: ${{secrets.PAT}}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: ${{secrets.AWS_REGION}}
+
+      - name: Resume and Suspend VMs
+        run: |
+          chmod +x ./list_instance_by_name
+          ./list_instance_by_name ${{secrets.AWS_REGION}}
