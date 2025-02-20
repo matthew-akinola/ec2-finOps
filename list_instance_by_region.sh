@@ -52,7 +52,7 @@ current_hour=$(date +%H)
 list_running_instances # Always list instances
 
 
-if [[ "$current_hour" -le "6" || "$current_hour" -gt "18" ]]; then
+if [[ "$current_hour" -ge "6" || "$current_hour" -lt "18" ]]; then
   echo "Starting instance...."
   start_instances
 else
